@@ -1,13 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from 'react-native';
-import { Link } from 'expo-router';
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>authentication</Text>
-      <Link style={styles.link} href='/auth/login'>Go to login</Link>
+      <Text style={styles.title}>Register doctor</Text>
       
     </View>
   );
@@ -22,8 +20,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  link:{
   },
   separator: {
     marginVertical: 30,

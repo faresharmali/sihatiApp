@@ -1,8 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import { Link, Stack, Tabs } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
-import Colors from '../../constants/Colors';
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -15,22 +14,51 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
+  console.log('tab layout');
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
-
+    <View style={styles.container}>    
+    <Stack
+     >
+       <Tabs.Screen
+         name="index"
+         options={{
+           headerShown:false,
+           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+         }}
+       />
       <Tabs.Screen
-        name="index"
+        name="login"
         options={{
-          title: 'Authentication',
+          headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="register-doctor"
+        options={{
+          title: 'register doctor',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="register-patient"
+        options={{
+          title: 'register patient',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+    
      
-    </Tabs>
+    </Stack>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'red',
+  }
+});
