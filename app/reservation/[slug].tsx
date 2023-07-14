@@ -1,16 +1,23 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
 
-import React from "react";
+import React,{useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TimaCard from "../../components/ui/cards/time.card";
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { CreateAppointement } from "../../api/appointements";
+import useAuth from "../../hooks/useAuth";
+import { Button, HStack, Modal, VStack } from "native-base";
 
 const index = () => {
   const { slug } = useLocalSearchParams();
+  console.log("slug", slug);
+  const { user } = useAuth();
+  const router = useRouter();
   const [selected, setSelected] = React.useState<any>({
     dateString: "2021-05-16",
   });
+  const [selectedTime, setSelectedTime] = React.useState<any>("");
   const timeSlots = () => {
     let slots: any = [];
     let start = 8;
@@ -21,10 +28,37 @@ const index = () => {
     }
     return slots;
   };
-  const isWeekend = (date:string) => {
+
+  const times = timeSlots();
+  const isWeekend = (date: string) => {
     const day = new Date(date).getDay();
-    return  day === 5;
+    return day === 5;
   };
+  const [showModal, setShowModal] = useState(false);
+  const onTimePress = async (time: any) => {
+    setSelectedTime(time)
+    setShowModal(true);
+
+  
+  };
+  const onConfirm = async () => {
+    const appointement = {
+      doctorId: slug,
+      patientId: user.identifier,
+      date: selected.dateString,
+      timeIndex:times.indexOf(selectedTime),
+      selectedTime,
+    };
+    try {
+      const data = await CreateAppointement(appointement, user.token);
+      setShowModal(false);
+      router.replace("/patient/appointements");
+      console.log("data",data);
+    } catch (e:any) {
+      console.log("err",e.response.data);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -47,20 +81,34 @@ const index = () => {
           firstDay={0}
         />
       </View>
-      {selected && !isWeekend(selected.dateString) &&   (
+      {selected && !isWeekend(selected.dateString) && (
         <View style={styles.DatesContainer}>
           <Text style={styles.datesTitle}>
             Disponibilité de {selected.dateString}
           </Text>
           <ScrollView style={{ width: "100%" }}>
             <View style={styles.timesContainer}>
-              {timeSlots().map((time: any, index: number) => (
-                <TimaCard time={time} key={index} />
+              {times.map((time: any, index: number) => (
+                <TimaCard onDayPress={onTimePress} time={time} key={index} />
               ))}
             </View>
           </ScrollView>
         </View>
       )}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Confirmation</Modal.Header>
+          <Modal.Body>
+           <Text>Rendez vous le : {selected.dateString} à {selectedTime}  </Text>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" onPress={onConfirm}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </SafeAreaView>
   );
 };

@@ -3,13 +3,14 @@ import React from "react";
 import { Avatar } from "native-base";
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { timeSlotsList } from "../../../constants/data";
 
 
-// create array of time slots for each day from 8:00 to 18:00 with 30 min interval
 
 
 
-const AppointmentCard = () => {
+const AppointmentCard = ({appointement}:any) => {
+  console.log("my appointement",appointement);
   return (
     <View style={styles.card}>
       <View style={styles.head}>
@@ -22,15 +23,15 @@ const AppointmentCard = () => {
           JB
         </Avatar>
         <View>
-          <Text style={styles.cardTitle}>Dr . Muhammed</Text>
-          <Text style={styles.cardSpeciality}>Gastro</Text>
+          <Text style={styles.cardTitle}>Dr . {appointement?.doctor?.user?.name}</Text>
+          <Text style={styles.cardSpeciality}>{appointement?.doctor?.specialization}</Text>
         </View>
       </View>
         <View style={styles.date}>
         <AntDesign name="calendar" size={24} color="white" />
-            <Text style={styles.dateText}>Dimanche , 29 Juillet</Text>
+            <Text style={styles.dateText}>{appointement?.date}</Text>
             <Ionicons name="time-outline" size={24} color="white" />
-            <Text style={styles.dateText}>12:00</Text>
+            <Text style={styles.dateText}>{appointement?.timeIndex ?timeSlotsList[appointement?.timeIndex] : ''}</Text>
         </View>
     </View>
   );

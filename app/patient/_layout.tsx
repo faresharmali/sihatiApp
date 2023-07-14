@@ -1,8 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Stack, Tabs } from "expo-router";
 import { Pressable, useColorScheme } from "react-native";
-
+import { AntDesign, Fontisto } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -42,7 +43,7 @@ export default function TabLayout() {
           tabBarStyle: { ...tabBarStyle },
           tabBarLabelStyle: { color: "#fff" },
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="calendar" color={"#fff"} />
+            <Ionicons name="calendar" size={24} color="white" />
           ),
         }}
       />
@@ -54,7 +55,7 @@ export default function TabLayout() {
           tabBarStyle: { ...tabBarStyle },
           tabBarLabelStyle: { color: "#fff" },
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="calendar" color={"#fff"} />
+            <Fontisto name="doctor" size={24} color="white" />
           ),
         }}
       />

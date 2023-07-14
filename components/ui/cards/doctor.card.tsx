@@ -10,11 +10,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { useRouter } from "expo-router";
 const DoctorCard = ({ doctor }: any) => {
-  console.log("doc", doctor);
+
   const router = useRouter();
   return (
     <TouchableOpacity
-      onPress={() => router.push("/profiles/"+doctor?.identifier+"/" )}
+      onPress={() => router.push("/profiles/"+doctor?.Doctor?.identifier+"/" )}
       style={styles.card}
     >
       <View style={styles.head}>

@@ -64,7 +64,7 @@ const doctorProfile = () => {
             source={require("../../assets/images/map.png")}
           />
         </View>
-        <Link style={styles.btnText} href={"/reservation/fares"} asChild>
+        <Link style={styles.btnText} href={"/reservation/"+doctor+""} asChild>
           <TouchableOpacity style={styles.btn}>
             <Text style={styles.btnText}>Prendre un rendez-vous</Text>
           </TouchableOpacity>

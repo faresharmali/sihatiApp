@@ -46,8 +46,7 @@ export default function EspaceMedcin() {
   const Register = async (values: any, { setErrors }: any) => {
     try {
       setLoading(true);
-      const data= await CreateDoctor(values);
-      console.log(data);
+      CreateDoctor(values);
       router.push("/auth/login");
     } catch (e: any) {
       if (e.response?.data?.message) {

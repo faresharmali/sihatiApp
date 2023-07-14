@@ -13,7 +13,6 @@ export default function Appointments() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title1}>Bonjour</Text>
         <View style={styles.heading}>
           <Text style={styles.title}>Fares Harmali</Text>
           <Avatar
@@ -25,6 +24,9 @@ export default function Appointments() {
             JB
           </Avatar>
         </View>
+          </View>
+          <View style={styles.content}>
+
 
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
@@ -34,7 +36,7 @@ export default function Appointments() {
             <DoctorCard doctor={doctor} key={doctor.identifier} />
           ))}
         </View>
-      </View>
+        </View>
     </SafeAreaView>
   );
 }
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#fff",
   },
   separator: {
     marginVertical: 30,
@@ -60,8 +63,13 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    // backgroundColor:"#1A87DD",
-    padding: 20,
+    backgroundColor: "#1A87DD",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+
   },
   inputContainer: {
     width: "100%",
@@ -94,5 +102,11 @@ const styles = StyleSheet.create({
     color: "#1A87DD",
     fontSize: 17,
     fontWeight: "bold",
+  },
+  content: {
+    padding: 20,
+
+    flex: 1,
+    width: "100%",
   },
 });
