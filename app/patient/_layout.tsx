@@ -15,18 +15,29 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
-    <Stack>
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
-          title: "patient",
+          title: "Acceuil",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarStyle: {backgroundColor:"#1A87DD",padding:5},
+          tabBarLabelStyle: { color: "#fff" },
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={"#fff"} />,
         }}
       />
-    </Stack>
+      <Tabs.Screen
+        name="appointements"
+        options={{
+          title: "Rendez-vous",
+          headerShown: false,
+          tabBarStyle: {backgroundColor:"#1A87DD",padding:5},
+          tabBarLabelStyle: { color: "#fff" },
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar"  color={"#fff"} />,
+        }}
+      />
+    </Tabs>
   );
 }

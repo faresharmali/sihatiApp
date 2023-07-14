@@ -41,6 +41,8 @@ function RootLayoutNav() {
           <Stack.Screen name="auth" options={{ headerShown: false }} />
           <Stack.Screen name="doctor" options={{ headerShown: false }} />
           <Stack.Screen name="patient" options={{ headerShown: false }} />
+          <Stack.Screen name="profiles" options={{ headerShown: false }} />
+          <Stack.Screen name="reservation" options={{ headerShown: false }} />
         </Stack>
       </NativeBaseProvider>
 

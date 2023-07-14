@@ -7,7 +7,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
-export default function TabOneScreen() {
+export default function Appointments() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -25,35 +25,17 @@ export default function TabOneScreen() {
           </Avatar>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Input
-            style={styles.input}
-            type="text"
-            placeholder="Rechercher un medecin"
-            leftElement={
-              <View style={styles.iconContainer}>
-                <AntDesign name="search1" size={24} color="black" />
-              </View>
-            }
-            w="100%"
-          />
-        </View>
+       
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Mes rendez-vous</Text>
-            <Text style={styles.HeadingBtn}>Voir tout</Text>
           </View>
           <AppointmentCard />
+          <AppointmentCard />
+          <AppointmentCard />
+          <AppointmentCard />
         </View>
-        <View style={styles.inputContainer}>
-          <View style={styles.heading}>
-            <Text style={styles.HeadingTitle}>Top medecins</Text>
-            <Text style={styles.HeadingBtn}>Voir tout</Text>
-          </View>
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-        </View>
+       
       </View>
     </SafeAreaView>
   );

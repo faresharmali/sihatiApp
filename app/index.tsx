@@ -7,7 +7,7 @@ export default function TabOneScreen() {
     const [isLoggedIn,setIsLoggedIn]=useState(true)
   return (
     <View style={styles.container}>
-      {isLoggedIn ? <Redirect href={"/auth/login"}/> :<Redirect href={"/auth/register-doctor"}/> }  
+      {!isLoggedIn ? <Redirect href={"/auth/login"}/> :<Redirect href={"/patient"}/> }  
     </View>
   );
 }
