@@ -15,6 +15,12 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const tabBarStyle = {
+    backgroundColor: "#1A87DD",
+    padding: 5,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+  };
 
   return (
     <Tabs>
@@ -23,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: "Acceuil",
           headerShown: false,
-          tabBarStyle: {backgroundColor:"#1A87DD",padding:5},
+          tabBarStyle: { ...tabBarStyle },
           tabBarLabelStyle: { color: "#fff" },
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={"#fff"} />,
         }}
@@ -33,9 +39,23 @@ export default function TabLayout() {
         options={{
           title: "Rendez-vous",
           headerShown: false,
-          tabBarStyle: {backgroundColor:"#1A87DD",padding:5},
+          tabBarStyle: { ...tabBarStyle },
           tabBarLabelStyle: { color: "#fff" },
-          tabBarIcon: ({ color }) => <TabBarIcon name="calendar"  color={"#fff"} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={"#fff"} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="medecins"
+        options={{
+          title: "Medecins",
+          headerShown: false,
+          tabBarStyle: { ...tabBarStyle },
+          tabBarLabelStyle: { color: "#fff" },
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={"#fff"} />
+          ),
         }}
       />
     </Tabs>

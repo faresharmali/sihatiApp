@@ -7,19 +7,41 @@ import { AntDesign } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
+import useAuth from "../../hooks/useAuth";
+import React, { useEffect,useState } from "react";
+import { getDoctors } from "../../api/user";
+import { useDispatch } from "react-redux";
+import { setDoctorsDB } from "../../redux/userReducer";
 export default function TabOneScreen() {
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    getDoctorsList();
+  }, [user]);
+
+  const getDoctorsList = async () => {
+    if (!user.token) return;
+
+    try {
+      const data = await getDoctors(user.token);
+      setDoctors(data);
+      dispatch(setDoctorsDB(data))
+    } catch (e:any) {
+      console.log("err",e.response.data);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title1}>Bonjour</Text>
         <View style={styles.heading}>
-          <Text style={styles.title}>Fares Harmali</Text>
+          <Text style={styles.title}>{user?.name}</Text>
           <Avatar
             size="md"
             bg="indigo.500"
-            source={{
-              uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-            }}
+            source={require("../../assets/images/avatar.png")}
           >
             JB
           </Avatar>
@@ -50,9 +72,11 @@ export default function TabOneScreen() {
             <Text style={styles.HeadingTitle}>Top medecins</Text>
             <Text style={styles.HeadingBtn}>Voir tout</Text>
           </View>
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
+          {doctors.map((doctor,key) => (
+
+            <DoctorCard doctor={doctor} key={key} />
+            ))}
+        
         </View>
       </View>
     </SafeAreaView>

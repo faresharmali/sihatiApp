@@ -9,17 +9,18 @@ import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
 import useAuth from "../../hooks/useAuth";
 export default function Appointments() {
-  const { user } = useAuth();
+  const { doctors } = useAuth();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title1}>Bonjour</Text>
         <View style={styles.heading}>
-        <Text style={styles.title}>{user?.name}</Text>
+          <Text style={styles.title}>Fares Harmali</Text>
           <Avatar
             size="md"
             bg="indigo.500"
             source={require("../../assets/images/avatar.png")}
+
           >
             JB
           </Avatar>
@@ -27,12 +28,11 @@ export default function Appointments() {
 
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
-            <Text style={styles.HeadingTitle}>Mes rendez-vous</Text>
+            <Text style={styles.HeadingTitle}>Medecins</Text>
           </View>
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
+          {doctors.map((doctor: any) => (
+            <DoctorCard doctor={doctor} key={doctor.identifier} />
+          ))}
         </View>
       </View>
     </SafeAreaView>

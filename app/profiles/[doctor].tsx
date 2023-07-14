@@ -12,9 +12,17 @@ import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import { Button } from "native-base";
 import { color } from "native-base/lib/typescript/theme/styled-system";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
+import useAuth from "../../hooks/useAuth";
 
 const doctorProfile = () => {
+  const { doctor } = useLocalSearchParams();
+  const {doctors}=useAuth()
+
+
+
+  const doctInfos=doctors.filter((doc:any)=>doc.identifier===doctor)[0]
+  console.log("our doc is",doctInfos);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -23,7 +31,7 @@ const doctorProfile = () => {
       />
 
       <View style={styles.header}>
-        <Card />
+        <Card doctInfos={doctInfos} />
       </View>
 
       <View style={styles.content}>
@@ -31,7 +39,7 @@ const doctorProfile = () => {
           <Text style={styles.ItemTitle}>Informations :</Text>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.label}>Numero de telephone :</Text>
-            <Text>0660818412</Text>
+            <Text>{doctInfos?.phone}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.label}>Wilaya :</Text>
@@ -39,7 +47,7 @@ const doctorProfile = () => {
           </View>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.label}>Addresse :</Text>
-            <Text>Cité lpp bouira</Text>
+            <Text> {doctInfos?.Doctor?.address}</Text>
           </View>
         </View>
         <View style={styles.contentItem}>
@@ -68,21 +76,19 @@ const doctorProfile = () => {
 
 export default doctorProfile;
 
-const Card = () => {
+const Card = ({doctInfos}:any) => {
   return (
     <View style={styles.card}>
       <View style={styles.head}>
         <Image
           style={styles.image}
-          source={{
-            uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-          }}
+          source={require("../../assets/images/doctor.png")}
         />
 
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>Dr . Ismal</Text>
+          <Text style={styles.cardTitle}>Dr . {doctInfos?.name}</Text>
           <Text style={styles.cardSpeciality}>
-            Anatomie -Pathologique - Bouira
+          {doctInfos?.Doctor?.specialization} - Bouira
           </Text>
           <View style={styles.date}>
             <AntDesign name="star" size={20} color="orange" />
