@@ -11,22 +11,34 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
 
+  const tabBarStyle = {
+    backgroundColor: "#1A87DD",
+    padding: 5,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
+  };
+
   return (
     <Tabs
   
     >
       <Tabs.Screen
         name="index"
+        
         options={{
+          tabBarStyle: { ...tabBarStyle },
+          tabBarLabelStyle: { color: "#fff" },
+          headerShown: false,
+
           title: 'doctor',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={"#fff"} />,
         }}
       />
       <Tabs.Screen
         name="appointements"
         options={{
           title:"appointements",
-          tabBarIcon: ({ color }) => <TabBarIcon name="usd"  color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="usd"  color={"#fff"} />,
         }}
       />
     

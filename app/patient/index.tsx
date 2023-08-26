@@ -1,5 +1,5 @@
 import { Icon, Input } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet,ScrollView } from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -85,9 +85,11 @@ export default function TabOneScreen() {
             <Text style={styles.HeadingTitle}>Top medecins</Text>
             <Text style={styles.HeadingBtn}>Voir tout</Text>
           </View>
+          <ScrollView style={{maxHeight:320}}>
           {doctors.map((doctor, key) => (
             <DoctorCard doctor={doctor} key={key} />
-          ))}
+            ))}
+            </ScrollView>
         </View>
       </View>
     </SafeAreaView>

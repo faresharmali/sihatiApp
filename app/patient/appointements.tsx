@@ -22,7 +22,6 @@ export default function Appointments() {
 
   const getAppointements = async () => {
     if (!user.token) return;
-
     try {
       const data = await getMyAppointements(user.token);
       setAppointements(data);
@@ -31,7 +30,6 @@ export default function Appointments() {
     }
   };
 
-  console.log("appointements");
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>

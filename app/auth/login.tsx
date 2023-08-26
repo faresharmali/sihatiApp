@@ -25,7 +25,6 @@ export default function Login() {
     setLoading(true);
     try {
       const data = await login(values.email, values.password);
-
       await AsyncStorage.setItem("user", JSON.stringify(data));
       dispatch(setSignedUser(data));
       if (data.role === "DOCTOR") {
@@ -34,6 +33,7 @@ export default function Login() {
         router.replace("/patient");
       }
     } catch (e: any) {
+      console.log(e);
       if (e.response?.data?.message) {
         setErrors({
           email: "Données incorrect",

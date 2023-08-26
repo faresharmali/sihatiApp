@@ -1,8 +1,9 @@
 import axios from "axios";
+const baseUrl="http://192.168.100.9:3000"
 
 export const login = async (email: string, password: string) => {
   const response = await axios.post(
-    process.env.EXPO_PUBLIC_API_URL + "/auth/signin",
+    baseUrl+"/auth/signin",
     {
       email,
       password,
@@ -12,9 +13,8 @@ export const login = async (email: string, password: string) => {
   return response.data;
 };
 export const CreatePatient = async (data: any) => {
-    console.log("creating patient",data)
     const response = await axios.post(
-        process.env.EXPO_PUBLIC_API_URL + "/auth/signup-patient",
+        baseUrl + "/auth/signup-patient",
         data,
         {
           headers: {
@@ -28,7 +28,7 @@ export const CreatePatient = async (data: any) => {
 };
 export const CreateDoctor = async (data: any) => {
   const response = await axios.post(
-    process.env.EXPO_PUBLIC_API_URL + "/auth/signup-doctor",
+    baseUrl + "/auth/signup-doctor",
     data,
     {
       headers: {

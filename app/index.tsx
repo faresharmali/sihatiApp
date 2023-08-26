@@ -11,7 +11,8 @@ import { setSignedUser } from "../redux/userReducer";
 export default function TabOneScreen() {
   const dispatch = useDispatch()
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isPatient, setIsPatient] = useState(false);
+  const [isDoctor, setIsDoctor] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,9 +22,15 @@ export default function TabOneScreen() {
       const user = await AsyncStorage.getItem("user");  
       if (user) {
         dispatch(setSignedUser(JSON.parse(user)))
-        setIsLoggedIn(true);
+        console.log("user",JSON.parse(user));
+        if(JSON.parse(user).role === "DOCTOR"){
+          setIsDoctor(true);
+        }else{
+
+          setIsPatient(true);
+        }
       } else {
-        setIsLoggedIn(false);
+        setIsPatient(false);
       }
       setIsLoading(false);
 
@@ -35,8 +42,9 @@ export default function TabOneScreen() {
     <View style={styles.container}>
       {isLoading && <Text>Loading...</Text>}
 
-      {(!isLoggedIn && !isLoading) && <Redirect href={"/auth/login"} />}
-      {(isLoggedIn && !isLoading) && <Redirect href={"/patient"} />}
+      {(!isPatient && !isDoctor && !isLoading) && <Redirect href={"/auth/login"} />}
+      {(isPatient && !isLoading) && <Redirect href={"/patient"} />}
+      {(isDoctor && !isLoading) && <Redirect href={"/doctor"} />}
 
       
     </View>

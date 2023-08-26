@@ -21,8 +21,7 @@ const doctorProfile = () => {
 
 
 
-  const doctInfos=doctors.filter((doc:any)=>doc.identifier===doctor)[0]
-  console.log("our doc is",doctInfos);
+  const doctInfos=doctors.filter((doc:any)=>doc.Doctor.identifier===doctor)[0]
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar

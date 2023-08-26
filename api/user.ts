@@ -1,9 +1,10 @@
 import axios from "axios";
 
+const baseUrl="http://192.168.100.9:3000"
 
 export const getDoctors = async (token: string) => {
     const response = await axios.get(
-        process.env.EXPO_PUBLIC_API_URL + "/users/doctors",
+        baseUrl + "/users/doctors",
         {
         headers: {
             "Content-Type": "application/json",

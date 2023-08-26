@@ -1,23 +1,27 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
 
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TimaCard from "../../components/ui/cards/time.card";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { CreateAppointement } from "../../api/appointements";
+import { CreateAppointement, getDoctorAppointements, getDoctorFreeTime } from "../../api/appointements";
 import useAuth from "../../hooks/useAuth";
 import { Button, HStack, Modal, VStack } from "native-base";
 
 const index = () => {
   const { slug } = useLocalSearchParams();
-  console.log("slug", slug);
   const { user } = useAuth();
   const router = useRouter();
+  
   const [selected, setSelected] = React.useState<any>({
-    dateString: "2021-05-16",
+    dateString: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
   });
-  const [selectedTime, setSelectedTime] = React.useState<any>("");
+
+  const [FreeTimes, setFreeTimes] = useState([])
+
+  const [selectedTime, setSelectedTime] = React.useState<any>(new Date());
+  const [isFetching, setIsFetching] = React.useState(false);
   const timeSlots = () => {
     let slots: any = [];
     let start = 8;
@@ -39,7 +43,6 @@ const index = () => {
     setSelectedTime(time)
     setShowModal(true);
 
-  
   };
   const onConfirm = async () => {
     const appointement = {
@@ -59,6 +62,30 @@ const index = () => {
     }
   }
 
+
+
+  const getAppointements = async (day?:any) => {
+    if (!user.token) return;
+    const dayString=day?day.dateString:selected.dateString
+    console.log("dayString",dayString);
+
+    try {
+      setIsFetching(true);
+      const data = await getDoctorFreeTime(user.token, slug as string,dayString);
+      setFreeTimes(data);
+      setIsFetching(false);
+
+    } catch (e: any) {
+      console.log("err", e.response.data);
+    }
+
+  };
+  useEffect(() => {
+    getAppointements();
+  }, [user]);
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -70,6 +97,7 @@ const index = () => {
           enableSwipeMonths={true}
           onDayPress={(day) => {
             setSelected(day);
+            getAppointements(day);
           }}
           markedDates={{
             [selected.dateString]: {
@@ -87,11 +115,14 @@ const index = () => {
             Disponibilité de {selected.dateString}
           </Text>
           <ScrollView style={{ width: "100%" }}>
-            <View style={styles.timesContainer}>
-              {times.map((time: any, index: number) => (
+            {isFetching ? <Text>Loading...</Text> : (
+
+              <View style={styles.timesContainer}>
+              {FreeTimes.map((time: any, index: number) => (
                 <TimaCard onDayPress={onTimePress} time={time} key={index} />
-              ))}
+                ))}
             </View>
+                )}
           </ScrollView>
         </View>
       )}
