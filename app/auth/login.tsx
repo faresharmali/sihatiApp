@@ -1,4 +1,4 @@
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image,Keyboard } from "react-native";
 import { Button, HStack, Heading, Spinner, View } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
@@ -23,8 +23,10 @@ export default function Login() {
 
   const SignIn = async (values: any, { setErrors }: any) => {
     setLoading(true);
+    Keyboard.dismiss();
     try {
       const data = await login(values.email, values.password);
+      console.log("data", data);
       await AsyncStorage.setItem("user", JSON.stringify(data));
       dispatch(setSignedUser(data));
       if (data.role === "DOCTOR") {

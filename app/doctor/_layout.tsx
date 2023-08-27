@@ -1,16 +1,14 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {  Tabs } from 'expo-router';
-
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
 
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
-
   const tabBarStyle = {
     backgroundColor: "#1A87DD",
     padding: 5,
@@ -19,30 +17,29 @@ export default function TabLayout() {
   };
 
   return (
-    <Tabs
-  
-    >
+    <Tabs>
       <Tabs.Screen
         name="index"
-        
         options={{
           tabBarStyle: { ...tabBarStyle },
           tabBarLabelStyle: { color: "#fff" },
           headerShown: false,
 
-          title: 'doctor',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={"#fff"} />,
+          title: "Acceuil",
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={"#fff"} />,
         }}
       />
       <Tabs.Screen
         name="appointements"
         options={{
-          title:"appointements",
-          tabBarIcon: ({ color }) => <TabBarIcon name="usd"  color={"#fff"} />,
+          title: "Rendez-vous",
+          headerShown: false,
+          tabBarStyle: { ...tabBarStyle },
+
+          tabBarLabelStyle: { color: "#fff" },
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={"#fff"} />,
         }}
       />
-    
-
     </Tabs>
   );
 }

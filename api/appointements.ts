@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl="http://192.168.100.9:3000"
+const baseUrl="https://sihati.vercel.app"
 
 export const CreateAppointement = async (data: any,token:string) => {
     console.log("creating appointement",data)
@@ -21,7 +21,6 @@ export const CreateAppointement = async (data: any,token:string) => {
 };
 
 export const getMyAppointements = async (token:string) => {
-  console.log("getting my appointements")
   const response = await axios.get(
     baseUrl + "/appointement/me",
     {
@@ -34,7 +33,7 @@ export const getMyAppointements = async (token:string) => {
   return response.data;
 }
 export const getDoctorAppointements = async (token:string,id:string) => {
-  console.log("getting my appointements")
+  console.log("id", baseUrl + "/appointement/doctor/"+id)
   const response = await axios.get(
     baseUrl + "/appointement/doctor/"+id,
     {

@@ -40,12 +40,11 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      {isLoading && <Text>Loading...</Text>}
+      {isLoading && <View style={styles.container}></View>}
 
       {(!isPatient && !isDoctor && !isLoading) && <Redirect href={"/auth/login"} />}
       {(isPatient && !isLoading) && <Redirect href={"/patient"} />}
       {(isDoctor && !isLoading) && <Redirect href={"/doctor"} />}
-
       
     </View>
   );
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor:"#1A87DD"
   },
   title: {
     fontSize: 20,

@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { NativeBaseProvider } from "native-base";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { useColorScheme,StyleSheet,View,Text } from "react-native";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 export {
@@ -43,6 +43,7 @@ function RootLayoutNav() {
       <Provider store={store}>
         <NativeBaseProvider>
           <Stack initialRouteName="doctor">
+            <Stack.Screen name="index" options={{ headerShown: false }}  />
             <Stack.Screen name="auth" options={{ headerShown: false }} />
             <Stack.Screen name="doctor" options={{ headerShown: false }} />
             <Stack.Screen name="patient" options={{ headerShown: false }} />
@@ -54,3 +55,19 @@ function RootLayoutNav() {
     </>
   );
 }
+
+const LoadingScreen = () => {
+  return (
+    <View style={styles.container}>
+      <Text>Loading...</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

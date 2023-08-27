@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl="http://192.168.100.9:3000"
+const baseUrl="https://sihati.vercel.app"
 
 export const login = async (email: string, password: string) => {
   const response = await axios.post(

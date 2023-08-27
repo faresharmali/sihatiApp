@@ -1,37 +1,57 @@
-import { Icon, Input } from "native-base";
-import { StyleSheet,ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
-import DoctorCard from "../../components/ui/cards/doctor.card";
 import useAuth from "../../hooks/useAuth";
 import React, { useEffect, useState } from "react";
-import { getDoctors } from "../../api/user";
-import { useDispatch } from "react-redux";
-import { setDoctorsDB } from "../../redux/userReducer";
+import { SimpleLineIcons } from "@expo/vector-icons";
+
 import { StatusBar } from "expo-status-bar";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { getDoctorAppointements } from "../../api/appointements";
+import { isToday } from "../../utils/date.utils";
 export default function TabOneScreen() {
-
   const { user } = useAuth();
-  const logout = async() => {
+  const router = useRouter();
+  const [Appointements, setAppointements] = useState([]);
+  const logout = async () => {
     await AsyncStorage.removeItem("user");
-    const router = useRouter();
-
     router.replace("/auth/login");
+  };
 
-  }
+  const getAppointements = async () => {
+    if (!user.token) return;
+    try {
+      const data = await getDoctorAppointements(
+        user.token,
+        user.Doctor?.identifier
+      );
+      setAppointements(data);
+    } catch (e: any) {
+      console.log("err", e);
+    }
+  };
+
+  useEffect(() => {
+    getAppointements();
+  }, [user]);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#1A87DD" />
       <View style={styles.header}>
         <View style={styles.heading}>
-          <Text style={styles.title}>{user?.name}</Text>
+          <TouchableOpacity onPress={logout}>
+            <SimpleLineIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.title}>
+            {user.role == "DOCTOR" ? "Dr.  " : ""}
+            {user?.name}
+          </Text>
           <Avatar
             size="md"
             bg="indigo.500"
@@ -40,16 +60,24 @@ export default function TabOneScreen() {
             JB
           </Avatar>
         </View>
-        <TouchableOpacity onPress={logout}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.content}>
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Rendez vous d'aujourdh'ui</Text>
           </View>
-          <AppointmentCard />
+          <ScrollView style={{ maxHeight: 570 }}>
+            {Appointements.filter((item: any) => isToday(item.date)).map(
+              (item: any, index) => (
+                <AppointmentCard
+                  key={index}
+                  type="patient"
+                  appointement={item}
+                  person={item.patient}
+                />
+              )
+            )}
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>

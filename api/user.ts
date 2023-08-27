@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl="http://192.168.100.9:3000"
+const baseUrl="https://sihati.vercel.app"
 
 export const getDoctors = async (token: string) => {
     const response = await axios.get(

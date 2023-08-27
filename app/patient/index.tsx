@@ -28,7 +28,6 @@ export default function TabOneScreen() {
 
   const getDoctorsList = async () => {
     if (!user.token) return;
-
     try {
       const data = await getDoctors(user.token);
       setDoctors(data);
@@ -78,7 +77,7 @@ export default function TabOneScreen() {
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Prochain rendez-vous</Text>
           </View>
-          <AppointmentCard />
+          {/* <AppointmentCard /> */}
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
