@@ -1,9 +1,9 @@
-import { Icon, Input } from "native-base";
+import { Icon, Spinner } from "native-base";
 import { StyleSheet,ScrollView } from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
@@ -16,12 +16,15 @@ import { StatusBar } from "expo-status-bar";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { getMyAppointements } from "../../api/appointements";
+
 export default function TabOneScreen() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useAuth();
   const [doctors, setDoctors] = useState([]);
-
+  const [appointements, setAppointements] = useState<any>({});
+  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     getDoctorsList();
   }, [user]);
@@ -29,12 +32,19 @@ export default function TabOneScreen() {
   const getDoctorsList = async () => {
     if (!user.token) return;
     try {
+      setIsFetching(true);
       const data = await getDoctors(user.token);
+      const apts = await getMyAppointements(user.token);
+      console.log("apts", apts);
+      if(apts.length > 0){
+        setAppointements(findNearestDateObject(apts));
+      }
       setDoctors(data);
       dispatch(setDoctorsDB(data));
     } catch (e: any) {
       console.log("err", e.response.data);
     }
+    setIsFetching(false);
   };
   const logout = async() => {
     await AsyncStorage.removeItem("user");
@@ -46,6 +56,9 @@ export default function TabOneScreen() {
       <StatusBar backgroundColor="#1A87DD" />
       <View style={styles.header}>
         <View style={styles.heading}>
+           <TouchableOpacity onPress={logout}>
+            <SimpleLineIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
           <Text style={styles.title}>{user?.name}</Text>
           <Avatar
             size="md"
@@ -55,36 +68,26 @@ export default function TabOneScreen() {
             JB
           </Avatar>
         </View>
-        <TouchableOpacity onPress={logout}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
+       
       </View>
       <View style={styles.content}>
-        <View style={styles.inputContainer}>
-          <Input
-            style={styles.input}
-            type="text"
-            placeholder="Rechercher un medecin"
-            leftElement={
-              <View style={styles.iconContainer}>
-                <AntDesign name="search1" size={24} color="black" />
-              </View>
-            }
-            w="100%"
-          />
-        </View>
+        
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Prochain rendez-vous</Text>
           </View>
-          {/* <AppointmentCard /> */}
+          {isFetching && <Spinner size={"lg"}/>}
+
+          {!appointements.date ? <Text>Vous n'avez pas de rendez-vous</Text> :(
+            <AppointmentCard  type="doctor" appointement={appointements} person={appointements.doctor}  />
+          )}
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Top medecins</Text>
-            <Text style={styles.HeadingBtn}>Voir tout</Text>
+
           </View>
-          <ScrollView style={{maxHeight:320}}>
+          <ScrollView style={{maxHeight:420}}>
           {doctors.map((doctor, key) => (
             <DoctorCard doctor={doctor} key={key} />
             ))}
@@ -93,6 +96,24 @@ export default function TabOneScreen() {
       </View>
     </SafeAreaView>
   );
+}
+
+
+function findNearestDateObject( objectArray: any[]) {
+  let nearestObject = null;
+  let minTimeDifference = Infinity;
+
+  for (const obj of objectArray) {
+    if (new Date(obj.date) instanceof Date) {
+      const timeDifference = Math.abs(new Date(obj.date).getTime() - new Date().getTime());
+      if (timeDifference < minTimeDifference) {
+        minTimeDifference = timeDifference;
+        nearestObject = obj;
+      }
+    }
+  }
+
+  return nearestObject;
 }
 
 const styles = StyleSheet.create({

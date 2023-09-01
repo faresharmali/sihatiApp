@@ -6,8 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { timeSlotsList } from "../../../constants/data";
 
 const AppointmentCard = ({ appointement, person, type }: any) => {
-  console.log("appointement", appointement.timeIndex);
-  console.log("timeSlotsList", timeSlotsList[0]);
+  console.log("appointement", appointement.doctor);
   return (
     <View style={styles.card}>
       <View style={styles.head}>
@@ -20,7 +19,7 @@ const AppointmentCard = ({ appointement, person, type }: any) => {
         </Avatar>
         <View>
           <Text style={styles.cardTitle}>
-            {type == "doctor" ? "Dr," : ""} {person?.name}
+            {type == "doctor" ? "Dr, "+person?.user?.name : person?.name} 
           </Text>
           {type == "doctor" && (
             <Text style={styles.cardSpeciality}>

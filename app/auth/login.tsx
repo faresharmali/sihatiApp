@@ -69,10 +69,10 @@ export default function Login() {
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
               value={values.email}
-              placeholder="Nom d'utilisateur"
+              placeholder="Email"
               type="text"
               name="email"
-              label="Nom d'utilisateur"
+              label="Email"
               validation={{ errors, touched }}
             />
             <LabeledInput

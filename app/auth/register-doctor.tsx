@@ -11,7 +11,7 @@ import {
   View,
 } from "native-base";
 
-import {} from "react-native";
+import {Keyboard} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
@@ -27,7 +27,6 @@ export default function EspaceMedcin() {
     password: Yup.string().required(),
     specialization: Yup.string().required(),
     phone: Yup.string().required(),
-    wilaya: Yup.string().required(),
     address: Yup.string().required(),
     name: Yup.string().required(),
   });
@@ -45,6 +44,7 @@ export default function EspaceMedcin() {
 
   const Register = async (values: any, { setErrors }: any) => {
     try {
+      Keyboard.dismiss();
       setLoading(true);
       CreateDoctor(values);
       router.push("/auth/login");
@@ -130,14 +130,7 @@ export default function EspaceMedcin() {
                 label="Numero de telephone"
                 validation={{ errors, touched }}
               />
-              <SelectInput
-                onSelect={handleChange("wilaya")}
-                value={values.wilaya}
-                name="wilaya"
-                label="Wilaya"
-                options={SPECIALITES}
-                validation={{ errors, touched }}
-              />
+            
               <LabeledInput
                 onChangeText={handleChange("address")}
                 onBlur={handleBlur("address")}

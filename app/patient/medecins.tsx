@@ -1,20 +1,32 @@
-import { Icon, Input } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet ,TouchableOpacity} from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
 import useAuth from "../../hooks/useAuth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 export default function Appointments() {
   const { doctors } = useAuth();
+  const router = useRouter();
+  const { user } = useAuth();
+
+  const logout = async() => {
+    await AsyncStorage.removeItem("user");
+    router.replace("/auth/login");
+
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.heading}>
-          <Text style={styles.title}>Fares Harmali</Text>
+        <TouchableOpacity onPress={logout}>
+            <SimpleLineIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{user?.name}</Text>
           <Avatar
             size="md"
             bg="indigo.500"

@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView } from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Avatar } from "native-base";
+import { Avatar, Spinner } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import useAuth from "../../hooks/useAuth";
 import React, { useEffect, useState } from "react";
@@ -22,10 +22,13 @@ export default function TabOneScreen() {
     await AsyncStorage.removeItem("user");
     router.replace("/auth/login");
   };
+  const [isFetching, setIsFetching] = useState(false);
+
 
   const getAppointements = async () => {
     if (!user.token) return;
     try {
+      setIsFetching(true);
       const data = await getDoctorAppointements(
         user.token,
         user.Doctor?.identifier
@@ -34,6 +37,7 @@ export default function TabOneScreen() {
     } catch (e: any) {
       console.log("err", e);
     }
+    setIsFetching(false);
   };
 
   useEffect(() => {
@@ -67,6 +71,8 @@ export default function TabOneScreen() {
             <Text style={styles.HeadingTitle}>Rendez vous d'aujourdh'ui</Text>
           </View>
           <ScrollView style={{ maxHeight: 570 }}>
+          {isFetching && <Spinner size={"lg"}/>}
+
             {Appointements.filter((item: any) => isToday(item.date)).map(
               (item: any, index) => (
                 <AppointmentCard

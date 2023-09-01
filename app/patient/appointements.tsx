@@ -1,9 +1,8 @@
-import { Icon, Input } from "native-base";
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
 import { Avatar } from "native-base";
 import AppointmentCard from "../../components/ui/cards/appointment.card";
 import DoctorCard from "../../components/ui/cards/doctor.card";
@@ -11,29 +10,46 @@ import useAuth from "../../hooks/useAuth";
 import React, { useEffect, useState } from "react";
 import { getMyAppointements } from "../../api/appointements";
 import { isAfterOrEqual } from "../../utils/date.utils";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import {  Spinner } from "native-base";
 
 export default function Appointments() {
   const { user } = useAuth();
   useEffect(() => {
     getAppointements();
   }, [user]);
+  const [isFetching, setIsFetching] = useState(false);
 
   const [appointements, setAppointements] = useState([]);
 
   const getAppointements = async () => {
     if (!user.token) return;
     try {
+      setIsFetching(true);
       const data = await getMyAppointements(user.token);
       setAppointements(data);
     } catch (e: any) {
       console.log("err", e.response.data);
     }
+    setIsFetching(false);
   };
+  const router = useRouter();
+
+  const logout = async() => {
+    await AsyncStorage.removeItem("user");
+    router.replace("/auth/login");
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.heading}>
+        <TouchableOpacity onPress={logout}>
+            <SimpleLineIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
           <Text style={styles.title}>{user?.name}</Text>
           <Avatar
             size="md"
@@ -49,8 +65,10 @@ export default function Appointments() {
           <View style={styles.heading}>
             <Text style={styles.HeadingTitle}>Mes rendez-vous</Text>
           </View>
-          {appointements.filter((a:any)=>isAfterOrEqual(a.date,new Date())).map((appointement, i) => (
-            <AppointmentCard appointement={appointement} key={i} />
+          {isFetching && <Spinner size={"lg"}/>}
+
+          {appointements.filter((a:any)=>isAfterOrEqual(a.date,new Date())).map((appointement:any, i) => (
+            <AppointmentCard  key={i} type="doctor" appointement={appointement} person={appointement.doctor}  />
           ))}
         </View>
       </View>

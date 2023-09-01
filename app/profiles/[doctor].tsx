@@ -40,10 +40,7 @@ const doctorProfile = () => {
             <Text style={styles.label}>Numero de telephone :</Text>
             <Text>{doctInfos?.phone}</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.label}>Wilaya :</Text>
-            <Text>Bouira</Text>
-          </View>
+        
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.label}>Addresse :</Text>
             <Text> {doctInfos?.Doctor?.address}</Text>
